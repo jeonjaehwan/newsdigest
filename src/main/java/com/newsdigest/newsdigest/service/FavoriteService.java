@@ -1,5 +1,6 @@
 package com.newsdigest.newsdigest.service;
 
+import com.newsdigest.newsdigest.dto.FavoriteSimpleResponse;
 import com.newsdigest.newsdigest.entity.Favorite;
 import com.newsdigest.newsdigest.entity.News;
 import com.newsdigest.newsdigest.entity.User;
@@ -10,8 +11,13 @@ import com.newsdigest.newsdigest.repository.NewsRepository;
 import com.newsdigest.newsdigest.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,5 +61,16 @@ public class FavoriteService {
         log.info("User {} unliked news {}", userId, newsId);
     }
 
+    public List<FavoriteSimpleResponse> getUserFavorites(Long userId, int page, int size) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Favorite> favoritePage = favoriteRepository.findAllByUser(user, pageRequest);
+
+        return favoritePage.stream()
+                .map(FavoriteSimpleResponse::from)
+                .collect(Collectors.toList());
+    }
 
 }

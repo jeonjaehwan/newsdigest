@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +18,9 @@ public class NewsSimpleResponse {
     private Long id;
     private String title;
     private String summarizedContent;
+    private LocalDate publishedAt;
+    private String imageUrl;
+    private Long viewCount;
 
     public static NewsSimpleResponse from(NewsDocument newsDocument) {
         return NewsSimpleResponse.builder()
@@ -30,6 +35,9 @@ public class NewsSimpleResponse {
                 .id(news.getId())
                 .title(news.getTitle())
                 .summarizedContent(news.getSummarizedContent())
+                .publishedAt(news.getPublishedAt())
+                .imageUrl(news.getImageUrl())
+                .viewCount(news.getViewCount())
                 .build();
     }
 }

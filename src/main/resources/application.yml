@@ -4,8 +4,11 @@ spring:
       host: 127.0.0.1
       port: 6379
   elasticsearch:
-    client:
-      endpoints: localhost:9200
+    username: elastic
+#    password:
+#    uris: localhost:9200
+    password: Af0WQRa-gsDm132ppuli
+    uris: https://52.203.194.120:9200
   batch:
     jdbc:
       initialize-schema: always
@@ -13,7 +16,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/newsdigest_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password:
+    password: 6585qwer
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -34,6 +38,9 @@ huggingface:
   api:
     key: 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
 
+
 server:
-  port: 8080
+  port: 80
   address: 0.0.0.0
+
+

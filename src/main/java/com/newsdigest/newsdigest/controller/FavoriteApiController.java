@@ -1,9 +1,12 @@
 package com.newsdigest.newsdigest.controller;
 
+import com.newsdigest.newsdigest.dto.FavoriteSimpleResponse;
 import com.newsdigest.newsdigest.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +35,18 @@ public class FavoriteApiController {
         favoriteService.unlikeNews(userId, newsId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 저장한 뉴스 목록 조회
+     */
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<FavoriteSimpleResponse>> getFavoriteNews(@PathVariable("userId") Long userId,
+                                                                        @RequestParam(name = "page", defaultValue = "0") int page,
+                                                                        @RequestParam(name = "size", defaultValue = "10") int size) {
+        List<FavoriteSimpleResponse> userFavorites = favoriteService.getUserFavorites(userId, page, size);
+
+        return ResponseEntity.ok(userFavorites);
     }
 
 }

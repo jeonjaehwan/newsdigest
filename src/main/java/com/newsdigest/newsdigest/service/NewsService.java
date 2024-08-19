@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -92,6 +92,8 @@ public class NewsService {
         News news = newsRepository.findById(newsId)
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
 
+        news.incrementViewCount();
+
         return NewsResponse.from(news);
     }
 
@@ -99,12 +101,10 @@ public class NewsService {
         String content = articleNode.path("content").asText(null);
         String description = articleNode.path("description").asText(null);
 
-        // content와 description이 모두 비어 있으면 null 반환
         if ((content == null || content.isEmpty()) && (description == null || description.isEmpty())) {
             return null;
         }
 
-        // content가 비어 있으면 description을 content로 대체
         if (content == null || content.isEmpty()) {
             content = description;
         }
@@ -117,13 +117,13 @@ public class NewsService {
         String publishedAtString = articleNode.path("publishedAt").asText("");
         String urlToImage = articleNode.path("urlToImage").asText(null);
         String title = articleNode.path("title").asText(null);
-        LocalDateTime publishedAt;
+        LocalDate publishedAt;
 
         try {
-            publishedAt = LocalDateTime.parse(publishedAtString, DateTimeFormatter.ISO_DATE_TIME);
+            publishedAt = LocalDate.parse(publishedAtString, DateTimeFormatter.ISO_DATE_TIME);
         } catch (DateTimeParseException e) {
             log.error("Error parsing publishedAt: {}", publishedAtString, e);
-            publishedAt = LocalDateTime.now();
+            publishedAt = LocalDate.now();
         }
 
         return News.builder()

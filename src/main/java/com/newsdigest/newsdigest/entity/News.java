@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +37,15 @@ public class News extends BaseTimeEntity{
     private String summarizedContent;
 
     @Column(name = "published_at", nullable = false)
-    private LocalDateTime publishedAt;
+    private LocalDate publishedAt;
 
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "view_count", nullable = false)
+    private Long viewCount = 0L;
+
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
 }

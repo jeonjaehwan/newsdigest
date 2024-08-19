@@ -3,7 +3,7 @@ package com.newsdigest.newsdigest.dto;
 import com.newsdigest.newsdigest.entity.Favorite;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter @Setter
 @Builder
@@ -15,7 +15,7 @@ public class FavoriteSimpleResponse {
 
     private String summarizedContent;
 
-    private LocalDateTime publishedAt;
+    private LocalDate publishedAt;
 
     public static FavoriteSimpleResponse from(Favorite favorite) {
         return FavoriteSimpleResponse.builder()
