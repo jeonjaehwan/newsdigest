@@ -5,10 +5,10 @@ spring:
       port: 6379
   elasticsearch:
     username: elastic
-#    password:
-#    uris: localhost:9200
-    password: Af0WQRa-gsDm132ppuli
-    uris: https://52.203.194.120:9200
+    password:
+    uris: localhost:9200
+#    password: Af0WQRa-gsDm132ppuli
+#    uris: https://52.203.194.120:9200
   batch:
     jdbc:
       initialize-schema: always
