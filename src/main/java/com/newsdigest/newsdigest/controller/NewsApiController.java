@@ -23,7 +23,7 @@ public class NewsApiController {
      */
     @GetMapping
     public ResponseEntity<List<NewsSimpleResponse>> getNews(@RequestParam(name = "page",defaultValue = "0") int page,
-                                                            @RequestParam(name = "size", defaultValue = "10") int size) {
+                                                            @RequestParam(name = "size", defaultValue = "15") int size) {
         List<NewsSimpleResponse> newsResponses = newsService.getAllNews(page, size);
 
         return ResponseEntity.ok(newsResponses);
@@ -32,8 +32,8 @@ public class NewsApiController {
     /**
      * 특정 뉴스 상세 조회
      */
-    @GetMapping("/{newsId}")
-    public ResponseEntity<NewsResponse> getNewsById(@PathVariable("newsId") Long newsId) {
+    @GetMapping("/{news-id}")
+    public ResponseEntity<NewsResponse> getNewsById(@PathVariable("news-id") Long newsId) {
         NewsResponse newsById = newsService.getNews(newsId);
 
         return ResponseEntity.ok(newsById);

@@ -1,5 +1,6 @@
 package com.newsdigest.newsdigest.service;
 
+import com.newsdigest.newsdigest.dto.SearchHistoryResponse;
 import com.newsdigest.newsdigest.entity.SearchHistory;
 import com.newsdigest.newsdigest.entity.User;
 import com.newsdigest.newsdigest.exception.UserNotFoundException;
@@ -7,6 +8,7 @@ import com.newsdigest.newsdigest.repository.SearchHistoryRepository;
 import com.newsdigest.newsdigest.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SearchHistoryService {
 
-    private static final int MAX_SEARCH_HISTORY = 5;
+    private static final int MAX_SEARCH_HISTORY = 50;
 
     private final SearchHistoryRepository searchHistoryRepository;
     private final UserRepository userRepository;
@@ -52,5 +54,19 @@ public class SearchHistoryService {
         List<SearchHistory> searchHistoryList = searchHistoryRepository.findByUserAndQuery(user, query);
 
        searchHistoryRepository.deleteAll(searchHistoryList);
+    }
+
+
+    public List<SearchHistoryResponse> getSearchHistory(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        return searchHistoryRepository.findByUserOrderByCreatedDateDesc(user, pageRequest)
+                .stream()
+                .map(SearchHistoryResponse::from)
+                .collect(Collectors.toList());
+
     }
 }
