@@ -25,7 +25,7 @@ public class QuartzConfig {
     public CronTriggerFactoryBean triggerFactoryBean(JobDetail jobDetail) {
         CronTriggerFactoryBean factoryBean = new CronTriggerFactoryBean();
         factoryBean.setJobDetail(jobDetail);
-        factoryBean.setCronExpression("0 50 14 * * ?");
+        factoryBean.setCronExpression("0 14 22 * * ?");
         factoryBean.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING);
 
         return factoryBean;

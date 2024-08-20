@@ -43,9 +43,20 @@ public class News extends BaseTimeEntity{
     private String imageUrl;
 
     @Column(name = "view_count", nullable = false)
-    private Long viewCount = 0L;
+    private Long viewCount;
 
     public void incrementViewCount() {
         this.viewCount++;
+    }
+
+    public static News from(String title, String originalContent, String summarizedContent, LocalDate publishedAt, String imageUrl) {
+        return News.builder()
+                .title(title)
+                .originalContent(originalContent)
+                .summarizedContent(summarizedContent)
+                .publishedAt(publishedAt)
+                .imageUrl(imageUrl)
+                .viewCount(0L)
+                .build();
     }
 }

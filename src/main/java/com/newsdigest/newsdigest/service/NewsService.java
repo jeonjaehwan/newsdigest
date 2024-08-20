@@ -51,7 +51,6 @@ public class NewsService {
     public void fetchAndSaveNews() {
         String url = String.format("%s?apiKey=%s&sources=cnn,bbc-news,the-new-york-times,reuters,techcrunch", apiUrl, apiKey);
         String response = restTemplate.getForObject(url, String.class);
-        log.info("responses = {}", response);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -98,24 +97,24 @@ public class NewsService {
     }
 
     private News convertJsonToNews(JsonNode articleNode) {
-        String content = articleNode.path("content").asText(null);
+        String originalContent = articleNode.path("content").asText(null);
         String description = articleNode.path("description").asText(null);
 
-        if ((content == null || content.isEmpty()) && (description == null || description.isEmpty())) {
+        if ((originalContent == null || originalContent.isEmpty()) && (description == null || description.isEmpty())) {
             return null;
         }
 
-        if (content == null || content.isEmpty()) {
-            content = description;
+        if (originalContent == null || originalContent.isEmpty()) {
+            originalContent = description;
         }
 
-        String summarizedContent = summarizationService.summarize(content);
-        if (summarizedContent.length() > content.length()) {
-            content = summarizedContent;
+        String summarizedContent = summarizationService.summarize(originalContent);
+        if (summarizedContent.length() > originalContent.length()) {
+            originalContent = summarizedContent;
         }
 
         String publishedAtString = articleNode.path("publishedAt").asText("");
-        String urlToImage = articleNode.path("urlToImage").asText(null);
+        String imageUrl = articleNode.path("urlToImage").asText(null);
         String title = articleNode.path("title").asText(null);
         LocalDate publishedAt;
 
@@ -126,12 +125,6 @@ public class NewsService {
             publishedAt = LocalDate.now();
         }
 
-        return News.builder()
-                .title(title)
-                .originalContent(content)
-                .summarizedContent(summarizedContent)
-                .publishedAt(publishedAt)
-                .imageUrl(urlToImage)
-                .build();
+        return News.from(title, originalContent, summarizedContent, publishedAt, imageUrl);
     }
 }
