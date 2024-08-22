@@ -16,6 +16,7 @@ public class NewsResponse {
     private String title;
     private String originalContent;
     private String summarizedContent;
+    private String imageUrl;
 
     public static NewsResponse from(News news) {
         return NewsResponse.builder()
@@ -23,6 +24,7 @@ public class NewsResponse {
                 .title(news.getTitle())
                 .originalContent(news.getOriginalContent())
                 .summarizedContent(news.getSummarizedContent())
+                .imageUrl(news.getImageUrl())
                 .build();
     }
 

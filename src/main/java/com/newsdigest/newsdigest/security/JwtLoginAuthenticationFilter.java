@@ -40,10 +40,14 @@ public class JwtLoginAuthenticationFilter extends UsernamePasswordAuthentication
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
         String token = jwtUtil.generateToken(userDetails);
         response.setHeader("Authorization", "Bearer " + token);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"name\": \"" + userDetails.getName() + "\"}");
     }
 
     @Override
