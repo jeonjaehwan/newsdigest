@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FavoriteSimpleResponse {
 
+    private Long newsId;
+
     private String title;
 
     private String summarizedContent;
@@ -19,6 +21,7 @@ public class FavoriteSimpleResponse {
 
     public static FavoriteSimpleResponse from(Favorite favorite) {
         return FavoriteSimpleResponse.builder()
+                .newsId(favorite.getNews().getId())
                 .title(favorite.getNews().getTitle())
                 .summarizedContent(favorite.getNews().getSummarizedContent())
                 .publishedAt(favorite.getNews().getPublishedAt())

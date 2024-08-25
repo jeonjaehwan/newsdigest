@@ -66,7 +66,7 @@ public class FavoriteService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Favorite> favoritePage = favoriteRepository.findAllByUser(user, pageRequest);
+        Page<Favorite> favoritePage = favoriteRepository.findAllByUserWithNews(user, pageRequest);
 
         return favoritePage.stream()
                 .map(FavoriteSimpleResponse::from)
