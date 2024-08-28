@@ -11,6 +11,7 @@ import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 @Configuration
 public class QuartzConfig {
 
+
     @Bean
     public JobDetailFactoryBean jobDetailFactoryBean() {
         JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
