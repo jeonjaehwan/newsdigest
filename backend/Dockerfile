@@ -1,5 +1,5 @@
 # 1단계: 빌드 단계
-FROM --platform=linux/amd64 gradle:7.6-jdk17 AS build
+FROM gradle:7.6-jdk17 AS build
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -11,7 +11,14 @@ COPY . .
 RUN gradle clean bootJar
 
 # 2단계: 실행 단계
-FROM --platform=linux/amd64 openjdk:17-jdk-slim
+FROM openjdk:17-jdk-slim
+
+# 타임존 설정을 위해 필요한 패키지 설치
+RUN apt-get update && apt-get install -y tzdata
+
+# 타임존 설정
+ENV TZ=Asia/Seoul
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 작업 디렉토리 설정
 WORKDIR /app

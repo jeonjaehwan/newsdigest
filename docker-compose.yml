@@ -43,9 +43,8 @@ services:
     env_file:
       - .env
 
-
   app:
-    image: newsdigest-image:latest
+    image: wjswoghks/newsdigest-image:latest
     container_name: newsdigest-container
     ports:
       - "8081:8080"
