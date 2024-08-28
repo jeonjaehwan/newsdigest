@@ -1,0 +1,68 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: 6585qwer
+      MYSQL_DATABASE: newsdigest
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+    env_file:
+      - .env
+
+  elasticsearch:
+    image: elasticsearch:8.14.3
+    container_name: elasticsearch-container
+    environment:
+      - discovery.type=single-node
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=6585qwer
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - app-network
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    env_file:
+      - .env
+
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    volumes:
+      - redis-data:/data
+    env_file:
+      - .env
+
+
+  app:
+    image: newsdigest-image:latest
+    container_name: newsdigest-container
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+      - redis
+      - elasticsearch
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  es-data:
+  redis-data:

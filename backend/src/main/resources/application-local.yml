@@ -1,0 +1,15 @@
+# application-local.yml
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  elasticsearch:
+    username: ${APP_ES_USERNAME}
+    password:
+    uris: localhost:9200
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/newsdigest_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${APP_MYSQL_USERNAME}
+    password: ${APP_MYSQL_PASSWORD}

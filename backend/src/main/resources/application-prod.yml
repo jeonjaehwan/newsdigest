@@ -1,0 +1,15 @@
+# application-prod.yml
+spring:
+  data:
+    redis:
+      host: ${APP_REDIS_HOST}
+      port: ${APP_REDIS_PORT}
+  elasticsearch:
+    username: ${APP_ES_USERNAME}
+    password: ${APP_ES_PASSWORD}
+    uris: ${APP_ES_URIS}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${APP_MYSQL_URL}
+    username: ${APP_MYSQL_USERNAME}
+    password: ${APP_MYSQL_PASSWORD}
