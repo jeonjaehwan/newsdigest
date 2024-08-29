@@ -45,8 +45,16 @@ public class JwtLoginAuthenticationFilter extends UsernamePasswordAuthentication
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
-        String accessToken = jwtUtil.generateToken((CustomUserDetails) authResult);
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain chain,
+                                            Authentication authResult) throws IOException {
+        // authResult에서 principal을 UserDetails로 가져옵니다.
+        CustomUserDetails userDetails = (CustomUserDetails) authResult.getPrincipal();
+
+        // JWT 토큰을 생성합니다.
+        String accessToken = jwtUtil.generateToken(userDetails);
+
         // 토큰이 블랙리스트에 있는지 확인
         if (tokenBlacklistService.isBlacklisted(accessToken)) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -57,8 +65,8 @@ public class JwtLoginAuthenticationFilter extends UsernamePasswordAuthentication
         // 블랙리스트에 없으면 계속 진행
         response.setHeader("Authorization", "Bearer " + accessToken);
 
-        // Refresh Token 생성 및 쿠키에 추가 (기존 코드 유지)
-        String refreshToken = jwtUtil.generateRefreshToken(authResult.getName());
+        // Refresh Token 생성 및 쿠키에 추가
+        String refreshToken = jwtUtil.generateRefreshToken(userDetails.getUsername());
         Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
