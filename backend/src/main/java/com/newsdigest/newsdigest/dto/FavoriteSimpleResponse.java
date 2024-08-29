@@ -17,6 +17,8 @@ public class FavoriteSimpleResponse {
 
     private String summarizedContent;
 
+    private String imgUrl;
+
     private LocalDate publishedAt;
 
     public static FavoriteSimpleResponse from(Favorite favorite) {
@@ -24,6 +26,7 @@ public class FavoriteSimpleResponse {
                 .newsId(favorite.getNews().getId())
                 .title(favorite.getNews().getTitle())
                 .summarizedContent(favorite.getNews().getSummarizedContent())
+                .imgUrl(favorite.getNews().getImageUrl())
                 .publishedAt(favorite.getNews().getPublishedAt())
                 .build();
     }

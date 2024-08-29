@@ -76,7 +76,7 @@ public class JwtLoginAuthenticationFilter extends UsernamePasswordAuthentication
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"accessToken\": \"" + accessToken + "\"}");
+        response.getWriter().write("{\"accessToken\": \"" + accessToken + "\", \"name\": \"" + userDetails.getUsername() + "\"}");
     }
 
     @Override
