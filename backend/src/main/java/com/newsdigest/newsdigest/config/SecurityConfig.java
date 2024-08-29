@@ -42,7 +42,7 @@ public class SecurityConfig {
 
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/users/login", "/api/users/register", "/api/news", "/api/users/logout").permitAll()
+                        .requestMatchers("/api/users/login", "/api/users/register", "/api/news", "/api/users/logout", "/refresh-token").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
