@@ -79,13 +79,14 @@ public class NewsService {
     @Cacheable(value = "newsList", key = "#page + '-' + #size")
     public List<NewsSimpleResponse> getAllNews(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<News> newsPage = newsRepository.findAll(pageable);
+        Page<News> newsPage = newsRepository.findAllByOrderByPublishedAtDesc(pageable);
 
         return newsPage.stream()
                 .map(NewsSimpleResponse::from)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Cacheable(value = "news", key = "#newsId")
     public NewsResponse getNews(Long newsId) {
         News news = newsRepository.findById(newsId)
